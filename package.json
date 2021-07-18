@@ -1,0 +1,25 @@
+{
+  "name": "Unit-twelve-homework",
+  "version": "1.0.0",
+  "description": "",
+  "main": "prompt.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mlward639/Unit-twelve-homework.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mlward639/Unit-twelve-homework/issues"
+  },
+  "homepage": "https://github.com/mlward639/Unit-twelve-homework#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^8.1.2",
+    "mysql": "^2.18.1"
+  }
+}
