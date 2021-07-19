@@ -32,6 +32,7 @@ function askMenu() {
 askMenu();
 
 
+// Add Employee questions
 const addEmployeeQuestions = [
 {
     type: 'input',
@@ -64,6 +65,7 @@ const addEmployeeQuestions = [
 }
 ]
 
+// if chose add employee, run this function to ask 'Add Employee' questions, write response to db. Go to menu once complete to choose next step.
 const addEmployee = () => {
     inquirer    
         .prompt(addEmployeeQuestions)
