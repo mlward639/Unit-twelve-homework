@@ -4,7 +4,7 @@
 <img src='https://img.shields.io/badge/License-MIT-yellow.svg'>
 
 ## Description
-Application for managing company's employees using node, inquirer, and MySQL. Database schema contains 3 tables (department, role, employee). Command-line application allows a user to add and view departments, roles, and employees, as well as update employee roles. (bonus for update employee managers, view employees by manager; delete depts roles, and employess; View the total utilized budget of a department -- ie the combined salaries of all employees in that department)
+Application for managing company's employees using node, inquirer, and MySQL. Database schema contains 3 tables (department, role, employee). Command-line application allows a user to add and view departments, roles, and employees, as well as update employee roles. (bonus for update employee managers, view employees by manager; delete depts roles, and employees; View the total utilized budget of a department -- ie the combined salaries of all employees in that department)
 
 ## Table of Contents 
  - [Installation](#installation)
