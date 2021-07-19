@@ -41,7 +41,7 @@ INSERT INTO role (title, salary, department_id)
 VALUES ('Office Administrator', 50000, 3);
 
 INSERT INTO role (title, salary, department_id)
-VALUES ('Human Resources Representative', 70000, 3);
+VALUES ('Human Resources Rep', 70000, 3);
 
 INSERT INTO role (title, salary, department_id)
 VALUES ('Receptionist', 40000, 3);

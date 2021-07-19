@@ -1,7 +1,7 @@
 //dependencies
 const inquirer = require('inquirer');
 const mysql = require('mysql');
-const cTable = require('console.table');
+const cTable = require('console.table'); //havent used yet
 // says to run npm install console.table-worked and bower install console.table-didnt work
 
 // 
@@ -9,14 +9,14 @@ const connection = mysql.createConnection({
   host: 'localhost',
   port: 3306,
   user: 'root',
-  password: '1234Root!',
+  password: 'Root1234!',
   database: 'employeeDB',
 });
 
 connection.connect((err) => {
     if (err) throw err;
     console.log(`connected as id ${connection.threadId}`);
-    afterConnection();
+    //afterConnection();
   });
 
 // inquirer prompts
@@ -26,7 +26,7 @@ const menuQuestion =
     {
         type: 'list',
         message: 'What would you like to do?',
-        choices: ['View All Employees', 'View All Employees by Department', 'View all Employees by Manager',  'Add Employee', 'Remove Employee', 'Update Employee Role', 'Update Employee Manager', 'Add Department', 'Remove Department', 'Quit'],
+        choices: ['View All Employees', 'View All Departments', 'View All Roles', 'View All Employees by Department', 'View all Employees by Manager',  'Add Employee', 'Remove Employee', 'Update Employee Role', 'Update Employee Manager', 'Add Department', 'Remove Department', 'Quit'],
         name: 'menu',
     }
 
@@ -39,11 +39,7 @@ function askMenu() {
     inquirer
         .prompt(menuQuestion)
         .then((res) => {
-          /* const initialHTML = pageTemplate.createInitialHTML(res);
-          //console.log("TEST", pageTemplate.createInitialHTML(res));
-            writeFileAsync('./output/teamFile.html', initialHTML); 
-          //console.log('res.menu', res.menu) */
-          menuChoice(res.menu);
+        menuChoice(res.menu);
         })
         .catch((err) => err ? console.error(err) : null)
 };
@@ -52,21 +48,30 @@ askMenu();
 // display all employees. Then go to menu to choose next step.
 const viewAllEmployees = () => {
     //pull table from db with all employees and display in cmd line
-    inquirer    
-        .prompt(menuQuestion)
-        .then((res) => {
-            //write to db
-        afterConnection = () => {   
-            connection.query('SELECT * FROM employee', (err, res) => {
-                if (err) throw err;
-                console.log(res);
-                connection.end();
-              });
-            };
-            console.log(res);
-            menuChoice(res.menu); 
-        })
-}
+    connection.query('SELECT * FROM employee', (err, data) => {
+        if (err) throw err;
+        console.table(data);
+        askMenu()
+        });
+};
+
+const viewAllDepartments = () => {
+    //pull table from db with all employees and display in cmd line
+    connection.query('SELECT * FROM department', (err, data) => {
+        if (err) throw err;
+        console.table(data);
+        askMenu()
+        });
+};
+
+const viewAllRoles = () => {
+    //pull table from db with all employees and display in cmd line
+    connection.query('SELECT * FROM role', (err, data) => {
+        if (err) throw err;
+        console.table(data);
+        askMenu()
+        });
+};
 
 // display all employees, sorted by department. Then go to menu to choose next step.
 const viewAllEmployeesByDept = () => {
@@ -79,7 +84,7 @@ const viewAllEmployeesByDept = () => {
         menuChoice(res.menu); 
     })
 }
-
+/*
 // display all employees, sorted by manager. Then go to menu to choose next step.
 const viewAllEmployeesByMgr = () => {
     //pull table from db with all employees and arrange/sort by manager, display in cmd line
@@ -115,7 +120,7 @@ const addEmployeeQuestions = [
     message: "Who is the employee's manager?",
     name: 'managers',
     choices: ['A', 'B', 'C']
-    /*choices: [array of manager names],*/
+    /*choices: [array of manager names],*
   },
   {    
     type: 'list',
@@ -205,7 +210,7 @@ const updateEmployeeRole = () => {
         fs.appendFile('./output/teamFile.html', engineerCardHTML, (err) => err ? console.error(err) : null);
         menuChoices(res.menu); 
       })
-  } */
+  } END/
 
 // choose which employee to update their manager and then choose the updated manager. Then go to menu and choose next step.
 const updateEmployeeMgrQuestion = [
@@ -292,25 +297,18 @@ const removeDept = () => {
     }) 
 }
 
-    inquirer    
-        .prompt(menuQuestion)
-        .then((res) => {
-            //write to db
-            console.log(res);
-            menuChoice(res.menu); 
-        })
+*/
 
-        inquirer    
-        .prompt(menuQuestion)
-        .then((res) => {
-            //write to db
-            console.log(res);
-            menuChoice(res.menu); 
-        })
 const menuChoice = (res) => {
     if (res === 'View All Employees') {
         console.log('chose View All Employees');
         viewAllEmployees();
+    } else if (res === 'View All Departments') {
+        console.log('chose View All Departments');
+        viewAllDepartments();
+    } else if (res === 'View All Roles') {
+        console.log('chose View All Roles');
+        viewAllRoles();
     } else if (res === 'View All Employees by Department'){
         console.log('View All Employees by Department');
         viewAllEmployeesByDept();
@@ -340,6 +338,7 @@ const menuChoice = (res) => {
         removeDept();
     } else if (res === 'Quit'){
         console.log('Quit');
+        connection.end();
         return;
     }
 }
