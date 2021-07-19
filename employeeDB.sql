@@ -23,7 +23,10 @@ CREATE TABLE employee(
 	empId INTEGER(11) AUTO_INCREMENT NOT NULL,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
-	PRIMARY KEY (empId)
+	PRIMARY KEY (empId),
+    FOREIGN KEY (role_id) REFERENCES role(roleId),
+    --FOREIGN KEY (manager_id) REFERENCES role(roleId) --?? would we need another table with manager???
+
         --role_id INT to hold reference to role employee has
     --manager_id  INT to hold reference to another employee that manages the employee being Created. This field may be null if the employee has no manager
 
