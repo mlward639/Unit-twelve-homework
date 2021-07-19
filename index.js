@@ -95,7 +95,17 @@ const viewAllEmployeesByMgr = () => {
         console.log(res);
         menuChoice(res.menu); 
     })
-}
+} */
+
+const choiceArray = [];
+
+
+connection.query("SELECT * FROM role", (err, data) => {
+    if (err) throw err;
+    data.forEach(({ title }) => {
+    choiceArray.push(title);
+    });
+})
 
 // Add Employee questions. Then go to menu to choose next step.
 const addEmployeeQuestions = [
@@ -110,37 +120,52 @@ const addEmployeeQuestions = [
     name: 'employeeLastName',
   },
   {
-    type: 'list',
+    type: 'rawlist',
     message: "What is the employee's role?",
     name: 'employeeRole',
-    choices: ['Sales Lead', 'Salesperson', 'Lead Engineer', 'Software Engineer', 'Account Manager', 'Accountant', 'Legal Team Lead']
-  },
+    choices: choiceArray
+    },
+    //choices: ['Sales Lead', 'Salesperson', 'Lead Engineer', 'Software Engineer', 'Account Manager', 'Accountant', 'Legal Team Lead']
+  
   {
     type: 'list',  
     message: "Who is the employee's manager?",
     name: 'managers',
     choices: ['A', 'B', 'C']
-    /*choices: [array of manager names],*
-  },
-  {    
-    type: 'list',
-    message: 'What would you like to do?',
-    choices: ['View All Employees', 'View All Employees by Department', 'View all Employees by Manager',  'Add Employee', 'Remove Employee', 'Update Employee Role', 'Update Employee Manager'],
-    name: 'menu',
-}
+    /*choices: [array of manager names],*/
+  }
 ]
 
 // if chose add employee, run this function to ask 'Add Employee' questions, write response to db. Use menu choice to determine next path.
-const addEmployee = () => {
-    inquirer    
-        .prompt(addEmployeeQuestions)
-        .then((res) => {
-        //write to db
-        console.log(res);
-        menuChoice(res.menu); 
-        })
-}
+const addEmployee = () => {     
+        inquirer    
+            .prompt(addEmployeeQuestions)
+            .then((res) => console.log('done', res))
+        //     .then((res) => {
+        //     connection.query(
+        //         'INSERT INTO employee SET ?',
+        //         {
+        //             first_name: res.employeeFirstName,
+        //             last_name: res.employeeLastName
+        //         },
+        //         (err) => {
+        //             if (err) throw err;
+        //         }
+            }
+            // connection.query("SELECT * from role", (err, data) => {
+                // const roleChoices = data.map((role) => {
+                //     return(
+                //         {
+                //     name: role.title,
+                //     value: role.id,
+                //         }
+                //     )}     
+    //     )
+    //     console.log(res);
+    //     menuChoice(res.menu); 
+    //     })
 
+/*
 // Choose employee to remove. Then go to menu to choose next step.
 const removeEmployeeQuestion = [
     {
