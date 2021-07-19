@@ -4,6 +4,20 @@ const mysql = require('mysql');
 const cTable = require('console.table');
 // says to run npm install console.table-worked and bower install console.table-didnt work
 
+// 
+const connection = mysql.createConnection({
+  host: 'localhost',
+  port: 3306,
+  user: 'root',
+  password: '1234Root!',
+  database: 'employeeDB',
+});
+
+connection.connect((err) => {
+    if (err) throw err;
+    console.log(`connected as id ${connection.threadId}`);
+    afterConnection();
+  });
 
 // inquirer prompts
 
@@ -42,6 +56,13 @@ const viewAllEmployees = () => {
         .prompt(menuQuestion)
         .then((res) => {
             //write to db
+        afterConnection = () => {   
+            connection.query('SELECT * FROM employee', (err, res) => {
+                if (err) throw err;
+                console.log(res);
+                connection.end();
+              });
+            };
             console.log(res);
             menuChoice(res.menu); 
         })
