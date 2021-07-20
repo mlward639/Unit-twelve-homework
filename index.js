@@ -4,6 +4,8 @@ const mysql = require('mysql');
 const cTable = require('console.table'); //havent used yet
 // says to run npm install console.table-worked and bower install console.table-didnt work
 
+// FOREIGN KEY ISSUE ON EMPLDB.SQL ***
+
 // Establish connection
 const connection = mysql.createConnection({
   host: 'localhost',
@@ -111,7 +113,7 @@ connection.query("SELECT * FROM department", (err, data) => {
     data.forEach(({ name }) => {
         departmentChoiceArray.push(name);
     });
-})
+}) // NEED TO CAPTURE DEPT ID AS WELL SO CAN SELECT ID BASED ON THE DEPT NAME THEY CHOOSE BELOW ***************
 
 // choose which role to add. then go to menu to choose next step.
 const addRoleQuestions = [
@@ -134,7 +136,7 @@ const addRoleQuestions = [
         type: 'list',
         message: 'Which department does it belong?',
         choices: departmentChoiceArray, 
-        name: 'addRoleDeptName' // NEED FUNCTION TO CONVERT THIS TO ID TO PUT IN THE TABLE
+        name: 'addRoleDeptName' // NEED FUNCTION TO CONVERT THIS TO ID TO PUT IN THE TABLE ***
     }
 ]
 
@@ -159,7 +161,7 @@ const addRole = () => {
 };
 
 // Select the titles from the role table
-// NEED TO ADD ROLE ID 
+// NEED TO ADD ROLE ID ********
 const roleChoiceArray = [];
 connection.query("SELECT * FROM role", (err, data) => {
     if (err) throw err;
@@ -180,12 +182,12 @@ const addEmployeeQuestions = [
     message: "What is the employee's last name?",
     name: 'employeeLastName',
   },
-  /* NOT WORKING ********* {
+  {
     type: 'list',
     message: "What is the employee's role?",
     name: 'employeeRole',
-    choices: choiceArray
-    }, */
+    choices: roleChoiceArray
+    }, 
     //choices: ['Sales Lead', 'Salesperson', 'Lead Engineer', 'Software Engineer', 'Account Manager', 'Accountant', 'Legal Team Lead']
   
   {
@@ -199,11 +201,11 @@ const addEmployeeQuestions = [
 ]
 
 // if chose add employee, run this function to ask 'Add Employee' questions, write response to db. Use menu choice to determine next path.
-/* const addEmployee = () => {     
+const addEmployee = () => {     
         inquirer    
             .prompt(addEmployeeQuestions)
             .then((res) => {
-                console.log('pls')
+                console.log('pls') 
                 connection.query(
                     'INSERT INTO employee SET ?',
                     {
@@ -212,21 +214,13 @@ const addEmployeeQuestions = [
                     },
                     (err) => {
                         if (err) throw err;
-                    }
+                    },
                 )
-
-                connection.query("SELECT * from role", (err, data) => {
-                    const choiceArray = [];
-                        data.forEach((
-                            { id: id, title: title }) => {
-                                choiceArray.push({id, title});
-                            });
-                            //choice array only getting title, not id...?
-                        })
-    //not working: for (let i=0; i<choiceArray.length; i++) {
-                    if (res.employeeRole === choiceArray.title[i]) {
+                for (let i=0; i<roleChoiceArray.length; i++) {
+                    if (res.employeeRole === roleChoiceArray[i]) {
                         console.log('HEREEEE');
-                        connection.query(
+                        // below only has the title of role bc roleChoiceArray only has title, not id. so have to figure out how to get id from this then put in below ***********
+                        /*connection.query(
                             'INSERT INTO employee SET ?',
                                 {
                                     role_id: choiceArray.id[i]
@@ -235,14 +229,14 @@ const addEmployeeQuestions = [
                                 if (err) throw err;
                                 }
                         )
-                        console.log('thisss', role_id)
+                        console.log('thisss', role_id) */
                     }
                 }
                 askMenu(); 
             })
+        }
 
-
-
+/*
             // connection.query("SELECT * from role", (err, data) => {
                 // const roleChoices = data.map((role) => {
                 //     return(
