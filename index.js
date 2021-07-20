@@ -27,7 +27,7 @@ const menuQuestion =
     {
         type: 'list',
         message: 'What would you like to do?',
-        choices: ['View All Employees', 'View All Departments', 'View All Roles', 'View All Employees by Department', 'View all Employees by Manager',  'Add Employee', 'Remove Employee', 'Update Employee Role', 'Update Employee Manager', 'Add Department', 'Remove Department', 'Quit'],
+        choices: ['View All Employees', 'View All Departments', 'View All Roles', 'View All Employees by Department', 'View all Employees by Manager',  'Add Employee', 'Remove Employee', 'Update Employee Role', 'Update Employee Manager', 'Add Department', 'Remove Department', 'Add Role', 'Quit'],
         name: 'menu',
     }
 
@@ -84,13 +84,11 @@ const addDeptQuestion =
         name: 'addDeptName'
     }
 
-
 // use answers from prompts to add selected department to database. Use menu choice to determine next path.
 const addDept = () => {
     inquirer
         .prompt(addDeptQuestion)
         .then((res) => {
-            console.log('HERRREE', res.addDeptName)
             connection.query(
                 'INSERT INTO department SET ?',
                 {
@@ -105,12 +103,68 @@ const addDept = () => {
         .catch((err) => err ? console.error(err) : null)
 };
 
+// Select the names from the department table
+// NEED TO GET DEPT ID AND NAME TOGETHER BUT ONLY DISPLAY NAME
+const departmentChoiceArray = [];
+connection.query("SELECT * FROM department", (err, data) => {
+    if (err) throw err;
+    data.forEach(({ name }) => {
+        departmentChoiceArray.push(name);
+    });
+})
+
+// choose which role to add. then go to menu to choose next step.
+const addRoleQuestions = [
+    {
+        type: 'input',
+        message: 'What role would you like to add?',
+        name: 'addRoleName'
+    },
+    {
+        type: 'input', 
+        message: 'What is the salary?',
+        name: 'addRoleSalary'
+    },
+    {
+        type: 'input', 
+        message: 'What department is this in?',
+        name: 'addRoleSalary'
+    },
+    {
+        type: 'list',
+        message: 'Which department does it belong?',
+        choices: departmentChoiceArray, 
+        name: 'addRoleDeptName' // NEED FUNCTION TO CONVERT THIS TO ID TO PUT IN THE TABLE
+    }
+]
+
+const addRole = () => {
+    inquirer
+        .prompt(addRoleQuestions)
+        .then((res) => {
+            console.log('HERRREE', res.addRoleName);
+            connection.query('INSERT INTO role SET ?',
+                {
+                    title: res.addRoleName,
+                    salary: res.addRoleSalary
+                    //NEED TO PULL res.addRoleDeptName and convert it to the corresponding id. then add here as department_id: _____ ************
+                },
+                (err) => {
+                    if (err) throw err;
+                },
+                askMenu()
+            )
+        })
+        .catch((err) => err ? console.error(err) : null)
+};
+
 // Select the titles from the role table
-const choiceArray = [];
+// NEED TO ADD ROLE ID 
+const roleChoiceArray = [];
 connection.query("SELECT * FROM role", (err, data) => {
     if (err) throw err;
     data.forEach(({ title }) => {
-    choiceArray.push(title);
+        roleChoiceArray.push(title);
     });
 })
 
@@ -126,19 +180,20 @@ const addEmployeeQuestions = [
     message: "What is the employee's last name?",
     name: 'employeeLastName',
   },
-  {
-    type: 'rawlist',
+  /* NOT WORKING ********* {
+    type: 'list',
     message: "What is the employee's role?",
     name: 'employeeRole',
     choices: choiceArray
-    },
+    }, */
     //choices: ['Sales Lead', 'Salesperson', 'Lead Engineer', 'Software Engineer', 'Account Manager', 'Accountant', 'Legal Team Lead']
   
   {
     type: 'list',  
     message: "Who is the employee's manager?",
     name: 'managers',
-    choices: ['A', 'B', 'C']
+    choices: ['Michael Scott', 'Dwight Schrute', 'Daryll Philbin']
+    // manager ids are 3, 16, and 9. need to figure out how to get the right id for each manager to attach to the name they chose. could just do : if res.managers === michael scott => set manager_id to 16. but thats not gonna be the best way. and also would have to break into first and last name to search...  **************
     /*choices: [array of manager names],*/
   }
 ]
@@ -373,6 +428,9 @@ const menuChoice = (res) => {
     } else if (res === 'Remove Department'){
         console.log('Remove Department');
         removeDept();
+    } else if (res === 'Add Role') {
+        console.log('Add Role');
+        addRole();
     } else if (res === 'Quit'){
         console.log('Quit');
         connection.end();
