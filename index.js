@@ -4,7 +4,7 @@ const mysql = require('mysql');
 const cTable = require('console.table'); //havent used yet
 // says to run npm install console.table-worked and bower install console.table-didnt work
 
-// 
+// Establish connection
 const connection = mysql.createConnection({
   host: 'localhost',
   port: 3306,
@@ -19,7 +19,8 @@ connection.connect((err) => {
     //afterConnection();
   });
 
-// inquirer prompts
+//================================================================  
+// Inquirer prompts:
 
 // initial menu question
 const menuQuestion = 
@@ -55,6 +56,7 @@ const viewAllEmployees = () => {
         });
 };
 
+// display all departments. Then go to menu to choose next step.
 const viewAllDepartments = () => {
     //pull table from db with all employees and display in cmd line
     connection.query('SELECT * FROM department', (err, data) => {
@@ -64,6 +66,7 @@ const viewAllDepartments = () => {
         });
 };
 
+// display all roles. Then go to menu to choose next step.
 const viewAllRoles = () => {
     //pull table from db with all employees and display in cmd line
     connection.query('SELECT * FROM role', (err, data) => {
@@ -73,29 +76,34 @@ const viewAllRoles = () => {
         });
 };
 
-// display all employees, sorted by department. Then go to menu to choose next step.
-const viewAllEmployeesByDept = () => {
-    //pull table from db with all employees and arrange/sort by department, display in cmd line
-    inquirer    
-        .prompt(menuQuestion)
+// choose which department to add. Then go to menu to choose next step.
+const addDeptQuestion = 
+    {
+        type: 'input',
+        message: 'What department do you want to add?',
+        name: 'addDeptName'
+    }
+
+
+// use answers from prompts to add selected department to database. Use menu choice to determine next path.
+const addDept = () => {
+    inquirer
+        .prompt(addDeptQuestion)
         .then((res) => {
-            //write to db
-            console.log(res);
-            menuChoice(res.menu); 
+            console.log('HERRREE', res.addDeptName)
+            connection.query(
+                'INSERT INTO department SET ?',
+                {
+                    name: res.addDeptName,
+                },
+                (err) => {
+                    if (err) throw err;
+                },
+                askMenu()
+            )
         })
-}
-/*
-// display all employees, sorted by manager. Then go to menu to choose next step.
-const viewAllEmployeesByMgr = () => {
-    //pull table from db with all employees and arrange/sort by manager, display in cmd line
-    inquirer    
-    .prompt(menuQuestion)
-    .then((res) => {
-        //write to db
-        console.log(res);
-        menuChoice(res.menu); 
-    })
-} */
+        .catch((err) => err ? console.error(err) : null)
+};
 
 // Select the titles from the role table
 const choiceArray = [];
@@ -136,11 +144,11 @@ const addEmployeeQuestions = [
 ]
 
 // if chose add employee, run this function to ask 'Add Employee' questions, write response to db. Use menu choice to determine next path.
-const addEmployee = () => {     
+/* const addEmployee = () => {     
         inquirer    
             .prompt(addEmployeeQuestions)
-            .then((res) => console.log('done', res))
             .then((res) => {
+                console.log('pls')
                 connection.query(
                     'INSERT INTO employee SET ?',
                     {
@@ -151,31 +159,33 @@ const addEmployee = () => {
                         if (err) throw err;
                     }
                 )
-                // connection.query("SELECT * from role", (err, data) => {
-                //     //console.log('dataaa', data)
-                //     const choiceArray = [];
-                //         data.forEach((
-                //             { id, title }) => {
-                //                 choiceArray.push({id, title});
-                //             });
-                //         })
-                //         for (let i=0; i<choiceArray.length; i++) {
-                //             if (res.employeeRole === choiceArray.title[i]) {
-                //                 console.log('HEREEEE');
-                //                 connection.query(
-                //                     'INSERT INTO employee SET ?',
-                //                     {
-                //                         role_id: choiceArray.id[i]
-                //                     },
-                //                     (err) => {
-                //                         if (err) throw err;
-                //                     }
-                //                 )
-                //             console.log('thisss', role_id)
-                //             }
-                //         }
+
+                connection.query("SELECT * from role", (err, data) => {
+                    const choiceArray = [];
+                        data.forEach((
+                            { id: id, title: title }) => {
+                                choiceArray.push({id, title});
+                            });
+                            //choice array only getting title, not id...?
+                        })
+    //not working: for (let i=0; i<choiceArray.length; i++) {
+                    if (res.employeeRole === choiceArray.title[i]) {
+                        console.log('HEREEEE');
+                        connection.query(
+                            'INSERT INTO employee SET ?',
+                                {
+                                    role_id: choiceArray.id[i]
+                                },
+                            (err) => {
+                                if (err) throw err;
+                                }
+                        )
+                        console.log('thisss', role_id)
+                    }
+                }
+                askMenu(); 
             })
-}
+
 
 
             // connection.query("SELECT * from role", (err, data) => {
@@ -188,9 +198,8 @@ const addEmployee = () => {
                 //     )}     
     //     )
     //     console.log(res);
-    //     menuChoice(res.menu); 
     //     })
-
+*/
 /*
 // Choose employee to remove. Then go to menu to choose next step.
 const removeEmployeeQuestion = [
@@ -297,29 +306,6 @@ const updateEmployeeMgr = () => {
         }) 
 }
 
-// choose which department to add. Then go to menu to choose next step.
-const addDeptQuestion = [
-    {
-    },
-    {
-        type: 'list',
-        message: 'What would you like to do?',
-        choices: ['View All Employees', 'View All Employees by Department', 'View all Employees by Manager',  'Add Employee', 'Remove Employee', 'Update Employee Role', 'Update Employee Manager', 'Add Department', 'Remove Department', 'Quit'],
-        name: 'menu',
-    }
-]
-
-// use answers from prompts to add selected department to database. Use menu choice to determine next path.
-const addDept = () => {
-    inquirer
-        .prompt(addDeptQuestion)
-        .then((res) => {
-            console.log(res);
-            // idk
-            menuChoice(res.menu); 
-        }) 
-}
-
 // Choose which department to remove
 const removeDeptQuestion = [
     {
@@ -393,15 +379,26 @@ const menuChoice = (res) => {
         return;
     }
 }
-/*function menuChoices(res) {
-    if (res === 'engineer') {
-        console.log('chose engineer')
-        askEngineerQuestions();
-    } else if (res === 'intern') {
-        console.log('chose intern')
-        askInternQuestions();
-    } else if (res === 'team is complete') {
-        appendEndHTML();
-        return console.log('Team is complete. Generating HTML.');
-    }
+/*// display all employees, sorted by department. Then go to menu to choose next step.
+// const viewAllEmployeesByDept = () => {
+//     //pull table from db with all employees and arrange/sort by department, display in cmd line
+//     inquirer    
+//         .prompt(menuQuestion)
+//         .then((res) => {
+//             //write to db
+//             console.log(res);
+//             menuChoice(res.menu); 
+//         })
+// }
+/*
+// display all employees, sorted by manager. Then go to menu to choose next step.
+const viewAllEmployeesByMgr = () => {
+    //pull table from db with all employees and arrange/sort by manager, display in cmd line
+    inquirer    
+    .prompt(menuQuestion)
+    .then((res) => {
+        //write to db
+        console.log(res);
+        menuChoice(res.menu); 
+    })
 } */
