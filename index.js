@@ -77,12 +77,12 @@ const viewAllRoles = () => {
 const viewAllEmployeesByDept = () => {
     //pull table from db with all employees and arrange/sort by department, display in cmd line
     inquirer    
-    .prompt(menuQuestion)
-    .then((res) => {
-        //write to db
-        console.log(res);
-        menuChoice(res.menu); 
-    })
+        .prompt(menuQuestion)
+        .then((res) => {
+            //write to db
+            console.log(res);
+            menuChoice(res.menu); 
+        })
 }
 /*
 // display all employees, sorted by manager. Then go to menu to choose next step.
@@ -97,9 +97,8 @@ const viewAllEmployeesByMgr = () => {
     })
 } */
 
+// Select the titles from the role table
 const choiceArray = [];
-
-
 connection.query("SELECT * FROM role", (err, data) => {
     if (err) throw err;
     data.forEach(({ title }) => {
@@ -141,17 +140,44 @@ const addEmployee = () => {
         inquirer    
             .prompt(addEmployeeQuestions)
             .then((res) => console.log('done', res))
-        //     .then((res) => {
-        //     connection.query(
-        //         'INSERT INTO employee SET ?',
-        //         {
-        //             first_name: res.employeeFirstName,
-        //             last_name: res.employeeLastName
-        //         },
-        //         (err) => {
-        //             if (err) throw err;
-        //         }
-            }
+            .then((res) => {
+                connection.query(
+                    'INSERT INTO employee SET ?',
+                    {
+                        first_name: res.employeeFirstName,
+                        last_name: res.employeeLastName,
+                    },
+                    (err) => {
+                        if (err) throw err;
+                    }
+                )
+                // connection.query("SELECT * from role", (err, data) => {
+                //     //console.log('dataaa', data)
+                //     const choiceArray = [];
+                //         data.forEach((
+                //             { id, title }) => {
+                //                 choiceArray.push({id, title});
+                //             });
+                //         })
+                //         for (let i=0; i<choiceArray.length; i++) {
+                //             if (res.employeeRole === choiceArray.title[i]) {
+                //                 console.log('HEREEEE');
+                //                 connection.query(
+                //                     'INSERT INTO employee SET ?',
+                //                     {
+                //                         role_id: choiceArray.id[i]
+                //                     },
+                //                     (err) => {
+                //                         if (err) throw err;
+                //                     }
+                //                 )
+                //             console.log('thisss', role_id)
+                //             }
+                //         }
+            })
+}
+
+
             // connection.query("SELECT * from role", (err, data) => {
                 // const roleChoices = data.map((role) => {
                 //     return(
