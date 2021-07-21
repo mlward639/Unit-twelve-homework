@@ -261,7 +261,59 @@ const addEmployee = () => {
 // */
 
 
+// list all employees
+const employeeChoiceArray = [];
+connection.query("SELECT * FROM employee", (err, data) => {
+    if (err) throw err;
+    data.forEach(({ id, first_name, last_name }) => {
+        employeeChoiceArray.push(id + ". " + first_name + " " + last_name);
+    }) 
+})
 
+// // choose which employee to update their role and then choose the updated role. Then go to menu and choose next step.
+const updateEmployeeRoleQuestion = [
+    {
+        type: 'list',
+        message: "Which employee's role would you like to update?",
+        choices: employeeChoiceArray,
+        name: 'chooseEmployee'
+    },
+    {
+        type: 'list',
+        message: "What is the employee's updated role?",
+        name: 'updatedEmployeeRole',
+        choices: roleChoiceArray
+      }
+] 
+
+// Use answers from prompts to select employee from database and then update their role. Use menu choice to determine next path.
+const updateEmployeeRole = () => {
+    //update employee role in db
+    inquirer  
+        .prompt(updateEmployeeRoleQuestion)
+        .then((res) => {
+            console.log('done') //remove line once rest of fxn working
+            connection.query(
+                // console.log('res.rolechoic', res.updateEmployeeRoleList),
+                // console.log('res.empchoic' + res.updatedEmployeeRole)
+                'UPDATE employee SET ? WHERE ?', //how to specify where since we get the employees name. would have to go into employee table to get match the employee name to id, then use that id here ****
+                // and have to convert the updated employee role to its employee id and then set it below
+                [
+                    {
+                        role_id: res.updatedEmployeeRole.split(". ")[0],
+                    },
+                    {
+                        id: res.chooseEmployee.split(". ")[0], 
+                    },
+                ],
+                (error) => {
+                    if (error) throw err;
+                  }
+            )
+            // use updateEmployeeRoleList.choice to select the employee from the db. then use updatedEmployeeRole.choice to update their role
+            askMenu(); //figure out line this goes on
+        }) 
+}
 
 /*
 // // Choose employee to remove. Then go to menu to choose next step.
