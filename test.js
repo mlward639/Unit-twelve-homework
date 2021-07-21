@@ -19,14 +19,14 @@ connection.connect((err) => {
     //afterConnection();
   });
   
-const departmentChoiceArray = [];
+  let employeeNameChoiceArray = [];
+  let empName = '';
+  connection.query('SELECT * FROM employee', (err, data) => {
+      if (err) throw err;
+      data.forEach(({first_name, last_name}) => {
+          empName = JSON.stringify(first_name, last_name);
+          employeeNameChoiceArray.push(empName);
+      })
+        console.log('empNameArray', employeeNameChoiceArray);
 
-connection.query("SELECT * FROM department", (err, data) => {
-    if (err) throw err;
-    data.forEach(({ name }) => {
-        departmentChoiceArray.push(name);
-    });
-    console.log(departmentChoiceArray);
-
-})
-
+      });

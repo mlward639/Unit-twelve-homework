@@ -10,16 +10,16 @@ SELECT * FROM employee;
 
 -- Department table
 INSERT INTO department (name)
-VALUES ('Accounting');
+VALUE ('Accounting');
 
 INSERT INTO department (name)
-VALUES ('Sales');
+VALUE ('Sales');
 
 INSERT INTO department (name)
-VALUES ('Office');
+VALUE ('Office');
 
 INSERT INTO department (name)
-VALUES ('Warehouse');
+VALUE ('Warehouse');
 
 -- Role table
 -- Accounting
@@ -41,7 +41,7 @@ INSERT INTO role (title, salary, department_id)
 VALUES ('Office Administrator', 50000, 3);
 
 INSERT INTO role (title, salary, department_id)
-VALUES ('Human Resources Rep', 70000, 3);
+VALUES ('Human Resources Representative', 70000, 3);
 
 INSERT INTO role (title, salary, department_id)
 VALUES ('Receptionist', 40000, 3);
@@ -54,6 +54,7 @@ VALUES ('Quality Assurance Director', 60000, 3);
 
 INSERT INTO role (title, salary, department_id)
 VALUES ('Customer Service Specialist', 60000, 3);
+
 INSERT INTO role (title, salary, department_id)
 VALUES ('Office Manager', 80000, 3);
 
@@ -70,7 +71,7 @@ VALUES ('Warehouse Foreman', 60000, 4);
 
 
 -- Employee table
-INSERT INTO employee (first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES ('Oscar', 'Martinez', 1, 3);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
@@ -116,7 +117,7 @@ INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ('Kelly', 'Kapoor', 10, 16);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ('Michael', 'Scott', 11);
+VALUES ('Michael', 'Scott', 11, NULL);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ('Dwight', 'Schrute', 12, 16);
