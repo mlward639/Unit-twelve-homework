@@ -4,7 +4,7 @@
 <img src='https://img.shields.io/badge/License-MIT-yellow.svg'>
 
 ## Description
-Application for managing company's employees using node, inquirer, and MySQL. Database schema contains 3 tables (department, role, employee). Command-line application allows a user to add and view departments, roles, and employees, as well as update employee roles. (bonus for update employee managers, view employees by manager; delete depts roles, and employees; View the total utilized budget of a department -- ie the combined salaries of all employees in that department)
+Application for managing company's employees using node, inquirer, and MySQL. Database schema contains 3 tables (department, role, and employee tables). Command-line application allows a user to add and view departments, roles, and employees, as well as update employee roles. 
 
 ## Table of Contents 
  - [Installation](#installation)
@@ -18,19 +18,20 @@ Application for managing company's employees using node, inquirer, and MySQL. Da
 Use package.json to download dependencies (using npm install).
 
 ## Usage
-
+* Install packages. 
+* Copy and paste employeeDB.sql and seed.sql in MySQL Workbench to create database and tables. 
+* Open integrated terminal in Visual Studio Code and start application (node index.js).
+* Answer prompts.
+* Select 'Quit' when done using application.
 
 ## Credits
 Libraries:
-* fs to access file system ????
-* express for creating the back end ????
-* path for accessing files ????
 * MySQL to connect to MySQL database and perform queries
 * Inquirer to obtain user input via the command-line
 * console.table to print MySQL rows to console
 
 ## Contribution Guidelines
-Utilize The Contributor Covenant (https://www.contributor-covenant.org/version/2/0/code_of_conduct/code_of_conduct.md) as reference for appropriate contribution guidelines.
+Utilize <a href= "https://www.contributor-covenant.org/version/2/0/code_of_conduct/code_of_conduct.md">The Contributor Covenant</a> as reference for appropriate contribution guidelines.
 
 ## Test Instructions
 n/a
@@ -50,11 +51,12 @@ Source for licensing information: <a href="https://opensource.org/licenses/MIT">
 
 ## Screenshots
 
-Screenshot of :
-<img src='#' alt = '#'>
+Screenshot of terminal while using application to view table and select next task:
+
+<img src='./screenshot-command-line.png' alt = 'Screenshot of terminal while using application to view table and select next task'>
 
 
 ## URLs
 <a href="https://github.com/mlward639/Unit-twelve-homework">Link to GitHub Repository</a>
 
-<a href="#">Link to Deployed Heroku Application</a>
+<a href="https://drive.google.com/file/d/1f3TXoEbRmM7aIv0J2VRvtau6vkrcvXvt/view">Link to Deployed Heroku Application</a>

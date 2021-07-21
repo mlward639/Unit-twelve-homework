@@ -25,7 +25,7 @@ CREATE TABLE employee(
     role_id INTEGER(11),
     FOREIGN KEY (role_id) REFERENCES role(id),
     manager_id INTEGER(11)
-    --FOREIGN KEY (manager_id) REFERENCES employee(id)  this will not work. idk why. it says online you can reference a foreign key inside the same table. the employee id is the primary key so thats not an issue. other ones i have seen have foreign key here without issue. IDK why!! if issue later, may be due to lack of foreign key?? idk. not totally sure i know purpose of foreign key.
+    --FUTURE: FOREIGN KEY (manager_id) REFERENCES employee(id) 
 );
 
 

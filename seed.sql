@@ -120,7 +120,7 @@ INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ('Michael', 'Scott', 11, NULL);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ('Dwight', 'Schrute', 12, 16);
+VALUES ('Dwight', 'Schrute', 12, NULL);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ('Roy', 'Anderson', 13, 20);
@@ -129,5 +129,5 @@ INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ('Madge', 'NoLastName', 13, 20);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ('Daryll', 'Philbin', 14, 20);
+VALUES ('Daryll', 'Philbin', 14, NULL);
 

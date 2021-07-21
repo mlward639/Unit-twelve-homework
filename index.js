@@ -28,7 +28,7 @@ const menuQuestion =
     {
         type: 'list',
         message: 'What would you like to do?',
-        choices: ['View All Employees', 'View All Departments', 'View All Roles', 'View All Employees by Department', 'View all Employees by Manager',  'Add Employee', 'Remove Employee', 'Update Employee Role', 'Update Employee Manager', 'Add Department', 'Remove Department', 'Add Role', 'Quit'],
+        choices: ['View All Employees', 'View All Departments', 'View All Roles', 'Add Employee', 'Update Employee Role', 'Add Department', 'Add Role', 'Quit'],
         name: 'menu',
     }
 
@@ -316,6 +316,13 @@ const menuChoice = (res) => {
 }
 
 /* FUTURE DEV (BONUS)
+const menuQuestion = 
+    {
+        type: 'list',
+        message: 'What would you like to do?',
+        choices: ['View All Employees', 'View All Departments', 'View All Roles', 'View All Employees by Department', 'View all Employees by Manager',  'Add Employee', 'Remove Employee', 'Update Employee Role', 'Update Employee Manager', 'Add Department', 'Remove Department', 'Add Role', 'Quit'],
+        name: 'menu',
+    }
 // // Choose employee to remove. Then go to menu to choose next step.
 // const removeEmployeeQuestion = [
 //     {
